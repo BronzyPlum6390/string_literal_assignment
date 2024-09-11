@@ -1,0 +1,8 @@
+3 is a valid numeric literal
+13.  is NOT a valid numeric literal
+.328  is NOT a valid numeric literal
+41.16  is NOT a valid numeric literal
++45.80  is NOT a valid numeric literal
++0 is a valid numeric literal
+-01 is a valid numeric literal
+# is NOT a valid numeric literal
