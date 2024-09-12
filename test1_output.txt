@@ -1,0 +1,16 @@
+3 is a valid numeric literal
+13. is a valid numeric literal
+.328 is a valid numeric literal
+41.16 is a valid numeric literal
++45.80 is a valid numeric literal
++0 is a valid numeric literal
+-01 is a valid numeric literal
+-14.4 is a valid numeric literal
+1e12 is a valid numeric literal
++1.4e6 is a valid numeric literal
+-2.e+7 is a valid numeric literal
+01E-06 is a valid numeric literal
+-.4E-7 is a valid numeric literal
+00e0 is a valid numeric literal
++0e1 is a valid numeric literal
+.2E-03 is a valid numeric literal
