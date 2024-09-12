@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
-using namespace std;
+namespace fs = std::filesystem;
 
 // Helper function to check if a character is a digit
 bool isDigit(char c) 
@@ -71,24 +71,20 @@ bool isValidNumericLiteral(const std::string& str)
     return hasDigit && (state == INTEGER || state == AFTER_DECIMAL || state == EXPONENT_DIGITS);
 }
 
-int main() {
-    std::string inputFileName;
-    std::cout << "Enter the input file name: ";
-    std::cin >> inputFileName;
-
+void processFile(const fs::path& inputPath) {
     // Open input file
-    std::ifstream inputFile(inputFileName);
+    std::ifstream inputFile(inputPath);
     if (!inputFile) {
-        std::cerr << "Error opening input file." << std::endl;
-        return 1;
+        std::cerr << "Error opening input file: " << inputPath << std::endl;
+        return;
     }
 
-    // Create output file name and open output file
-    std::string outputFileName = inputFileName.substr(0, inputFileName.find_last_of('.')) + "_output.txt";
-    std::ofstream outputFile(outputFileName);
+    // Create output file in the same directory as the input file
+    fs::path outputPath = inputPath.parent_path() / (inputPath.stem().string() + "_output.txt");
+    std::ofstream outputFile(outputPath);
     if (!outputFile) {
-        std::cerr << "Error creating output file." << std::endl;
-        return 1;
+        std::cerr << "Error creating output file: " << outputPath << std::endl;
+        return;
     }
 
     std::string line;
@@ -107,7 +103,30 @@ int main() {
     inputFile.close();
     outputFile.close();
 
-    std::cout << "Results have been written to " << outputFileName << std::endl;
+    std::cout << "Results for " << inputPath.filename() << " have been written to " << outputPath << std::endl;
+}
 
+int main() 
+{
+    std::string inputFileName;
+    
+    // Display current working directory
+    std::cout << "Current working directory: " << fs::current_path() << std::endl;
+    
+    // Loop to get and process multiple files
+    while (true) {
+        std::cout << "\nEnter an input file name (or full path), or type 'done' to finish: ";
+        std::getline(std::cin, inputFileName);
+        
+        if (inputFileName == "done") break;
+        
+        // Convert to absolute path if it's not already
+        fs::path inputPath = fs::absolute(inputFileName);
+        
+        std::cout << "Processing file: " << inputPath << std::endl;
+        processFile(inputPath);
+    }
+
+    std::cout << "\nAll files have been processed." << std::endl;
     return 0;
 }
